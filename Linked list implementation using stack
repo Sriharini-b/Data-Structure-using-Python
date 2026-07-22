@@ -1,0 +1,68 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class Stack:
+    def __init__(self, size):
+        self.top = None
+        self.size = size
+        self.count = 0
+
+    def push(self, value):
+        if self.count == self.size:
+            print("book Stack Overflow")
+            return
+
+        new_node = Node(value)
+        new_node.next = self.top
+        self.top = new_node
+        self.count += 1
+        print(value, "book pushed")
+
+    def pop(self):
+        if self.top is None:
+            print("book Stack Underflow")
+            return
+
+        value = self.top.data
+        self.top = self.top.next
+        self.count -= 1
+        print(value, "popped")
+
+    def display(self):
+        if self.top is None:
+            print("book Stack is empty")
+            return
+
+        temp = self.top
+        print("Stack elements:")
+        while temp:
+            print(temp.data)
+            temp = temp.next
+
+
+size = int(input("Enter book stack size: "))
+
+stack = Stack(size)
+print("1. Push")
+print("2. Pop")
+print("3. display")
+
+
+while True:
+    choice = int(input("\nEnter your choice: "))
+
+    if choice == 1:
+        value =input("Enter book name: ")
+        stack.push(value)
+
+    elif choice == 2:
+        stack.pop()
+
+    elif choice == 3:
+        stack.display()
+
+    else:
+        print("Invalid choice")
