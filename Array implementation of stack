@@ -1,0 +1,52 @@
+class Stack:
+    def __init__(self):
+        self.stack=[]
+
+    def push(self,item):
+        self.stack.append(item)
+        print(f"{item} pushed to Book stack")
+
+    def pop(self):
+        if len(self.stack)==0:
+            print(" Book stack underflow")
+        return self.stack.pop()
+
+    def peek(self):
+        if len(self.stack)==0:
+            print(" Book stack is empty")
+        return self.stack[-1]
+
+    def display(self):
+        print("Book Stack elements are",self.stack)
+        
+s=Stack()
+n = int(input("Enter number of book: "))
+for i in range(n):
+    data= input("Enter a data: ")
+    s.push(data)
+
+print("\n ARRAY: ")
+s.display()
+print("1.push")
+print("2.pop")
+print("3.peek")
+
+choice = input("\n enter your choice: ")
+if choice == "push":
+    data_to_insert= input("Enter a data to insert: ")
+    s.push(data_to_insert)
+    print("\nAfter pushed:")
+    s.display()
+
+    
+elif choice == "pop":
+    s.pop()
+    print("\nAfter poped:")
+    s.display()
+
+elif choice == "peek":
+    print("\nPeek value: ",s.peek())
+    s.display()
+
+else:
+    print("Invalid Choice")
