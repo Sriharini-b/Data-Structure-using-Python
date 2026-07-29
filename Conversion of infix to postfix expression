@@ -1,0 +1,25 @@
+o=set(['+','-','*','/','(',')','^'])
+p={'+':1,'-':1,'*':1,'/':2,'^':2}
+def infix_to_postfix(exp):
+    s=[]
+    output=''
+    for ch in exp:
+        if ch not in o:
+            output+=ch
+        elif ch=='(':
+            s.append('(')
+        elif ch==')':
+            while s and s[-1]!='(':
+                output+=s.pop()
+            s.pop()
+        else:
+            while s and s[-1]!='(' and p[ch]<=p[s[-1]]:
+                output+=s.pop()
+            s.append(ch)
+
+    while s:
+        output+=s.pop()
+    return output
+exp=input("Enter infix expression")
+print("Infix expression : ",exp)
+print("postfix expression : ",infix_to_postfix(exp))
