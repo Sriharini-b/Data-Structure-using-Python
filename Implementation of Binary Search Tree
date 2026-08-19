@@ -1,0 +1,162 @@
+class Node:
+    def __init__(self, time, visitor):
+        self.time = time
+        self.visitor = visitor
+        self.left = None
+        self.right = None
+
+
+class LogBook:
+    def __init__(self):
+        self.root = None
+
+
+    def insert(self, time, visitor):
+        new_node = Node(time, visitor)
+
+        if self.root is None:
+            self.root = new_node
+            return
+
+        current = self.root
+
+        while True:
+            if time < current.time:
+                if current.left is None:
+                    current.left = new_node
+                    return
+                current = current.left
+
+            else:
+                if current.right is None:
+                    current.right = new_node
+                    return
+                current = current.right
+
+    def search(self, time):
+        current = self.root
+
+        while current is not None:
+            if time == current.time:
+                return current
+
+            elif time < current.time:
+                current = current.left
+
+            else:
+                current = current.right
+
+        return None
+
+    def delete(self, time):
+        self.root = self._delete(self.root, time)
+
+    def _delete(self, node, time):
+        if node is None:
+            return None
+
+        if time < node.time:
+            node.left = self._delete(node.left, time)
+
+        elif time > node.time:
+            node.right = self._delete(node.right, time)
+
+        else:
+            if node.left is None and node.right is None:
+                return None
+
+            elif node.left is None:
+                return node.right
+
+            elif node.right is None:
+                return node.left
+
+            else:
+                successor = self._find_min(node.right)
+
+                node.time = successor.time
+                node.visitor = successor.visitor
+
+                node.right = self._delete(node.right, successor.time)
+
+        return node
+
+    def _find_min(self, node):
+        current = node
+
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def inorder(self, node):
+        if node is not None:
+            self.inorder(node.left)
+            print(node.time, "-", node.visitor)
+            self.inorder(node.right)
+
+    def display(self):
+        if self.root is None:
+            print("Logbook is empty.")
+        else:
+            print("\nLog Entries in Sorted Order:")
+            self.inorder(self.root)
+
+    def count(self, node):
+        if node is None:
+            return 0
+
+        return 1 + self.count(node.left) + self.count(node.right)
+
+logbook = LogBook()
+
+while True:
+    print("\n========== LOG BOOK ==========")
+    print("1. Insert Log Entry")
+    print("2. Delete Log Entry")
+    print("3. Search Log Entry")
+    print("4. Display Log Entries")
+    print("5. Total Number of Entries")
+    print("6. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        time = input("Enter time: ")
+        visitor = input("Enter visitor name: ")
+
+        logbook.insert(time, visitor)
+        print("Log entry inserted successfully.")
+
+    elif choice == 2:
+        time = input("Enter time to delete: ")
+
+        if logbook.search(time) is not None:
+            logbook.delete(time)
+            print("Log entry deleted successfully.")
+        else:
+            print("Log entry not found.")
+
+    elif choice == 3:
+        time = input("Enter time to search: ")
+
+        result = logbook.search(time)
+
+        if result is not None:
+            print("Log entry found:")
+            print(result.time, "-", result.visitor)
+        else:
+            print("Log entry not found.")
+
+    elif choice == 4:
+        logbook.display()
+
+    elif choice == 5:
+        print("Total number of entries:",
+              logbook.count(logbook.root))
+
+    elif choice == 6:
+        print("Exiting program...")
+        break
+
+    else:
+        print("Invalid choice!")
